@@ -12,9 +12,9 @@ export const registerCompanySchema = joi
   })
   .required();
 
-// export const login = joi
-//   .object({
-//     email: joi.string().email().required(),
-//     password: joi.string().required(),
-//   })
-//   .required();
+export const loginCompany = joi
+  .object({
+    CompanyEmail: joi.string().email().required(),
+    password: joi.string().required(),
+  })
+  .required();

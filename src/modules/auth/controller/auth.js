@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import companyModel from "../../../../DB/models/company.model.js";
+import jwt from "jsonwebtoken";
 
 export const registerCompany = asyncHandler(async (req, res, next) => {
   const { CompanyName, CompanyEmail, password, CompanyPhone, CompanyAddress } =
@@ -29,38 +30,26 @@ export const registerCompany = asyncHandler(async (req, res, next) => {
   });
 });
 
-// export const login = asyncHandler(async (req, res, next) => {
-//   const { email, password } = req.body;
-//   const user = await userModel.findOne({ email });
+export const loginCompany = asyncHandler(async (req, res, next) => {
+  const { CompanyEmail, password } = req.body;
+  const company = await companyModel.findOne({ CompanyEmail });
 
-//   if (!user) {
-//     return next(new Error("Invalid-Email", { cause: 400 }));
-//   }
+  if (!company) {
+    return next(new Error("Invalid-CompanyEmail", { cause: 400 }));
+  }
 
-//   if (!user.isConfirmed) {
-//     return next(new Error("Un activated Account", { cause: 400 }));
-//   }
+  const match = bcryptjs.compareSync(password, company.password);
 
-//   const match = bcryptjs.compareSync(password, user.password);
+  if (!match) {
+    return next(new Error("Invalid-Password", { cause: 400 }));
+  }
 
-//   if (!match) {
-//     return next(new Error("Invalid-Password", { cause: 400 }));
-//   }
+  const token = jwt.sign(
+    { id: company._id, CompanyEmail: company.CompanyEmail },
+    process.env.TOKEN_KEY
+  );
 
-//   const token = jwt.sign(
-//     { id: user._id, email: user.email },
-//     process.env.TOKEN_KEY,
-//     { expiresIn: "2d" }
-//   );
+  await company.save();
 
-//   await tokenModel.create({
-//     token,
-//     user: user._id,
-//     agent: req.headers["user-agent"],
-//   });
-
-//   user.status = "online";
-//   await user.save();
-
-//   return res.status(200).json({ success: true, result: token });
-// });
+  return res.status(200).json({ success: true, result: token });
+});
