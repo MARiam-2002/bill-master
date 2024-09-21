@@ -3,6 +3,7 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 import companyModel from "../../../../DB/models/company.model.js";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from 'uuid';
+import userModel from "../../../../DB/models/user.model.js";
 
 export const registerCompany = asyncHandler(async (req, res, next) => {
   const { CompanyName, CompanyEmail, password, CompanyPhone, CompanyAddress } =
