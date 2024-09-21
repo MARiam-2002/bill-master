@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import tokenModel from "../../DB/models/token.model.js";
-import userModel from "../../DB/models/user.model.js";
+import companyModel from "../../DB/models/company.model.js";
 export const isAuthenticated = asyncHandler(async (req, res, next) => {
   let token = req.headers["token"];
 
@@ -14,18 +13,14 @@ export const isAuthenticated = asyncHandler(async (req, res, next) => {
     return next(new Error("Invalid-token"));
   }
 
-  const tokenDB = await tokenModel.findOne({ token, isValid: true });
 
-  if (!tokenDB) {
-    return next(new Error("Token expired!"));
-  }
 
-  const user = await userModel.findOne({ email: decode.email });
+  const company = await companyModel.findOne({ CompanyEmail: decode.CompanyEmail });
 
-  if (!user) {
+  if (!company) {
     return next(new Error("user not found!"));
   }
 
-  req.user = user;
+  req.company = company;
   return next();
 });

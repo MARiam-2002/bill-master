@@ -18,3 +18,7 @@ export const loginCompany = joi
     password: joi.string().required(),
   })
   .required();
+
+export const addUser = joi.object({
+  phone: joi.string().required(),
+});

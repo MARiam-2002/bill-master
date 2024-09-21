@@ -18,6 +18,10 @@ const companySchema = new Schema(
     password: {
       type: String,
     },
+    role: {
+      type: String,
+      default: "company",
+    },
 
     CompanyPhone: String,
     CompanyAddress: String,
@@ -34,7 +38,6 @@ const companySchema = new Schema(
           "ecommerceDefaults/user/png-clipart-user-profile-facebook-passport-miscellaneous-silhouette_aol7vc",
       },
     },
-  
   },
   { timestamps: true }
 );
