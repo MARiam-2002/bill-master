@@ -10,6 +10,10 @@ const tokenSchema = new Schema(
       type: Types.ObjectId,
       ref: "User",
     },
+    company: {
+      type: Types.ObjectId,
+      ref: "Company",
+    },
     isValid: {
       type: Boolean,
       default: true,
@@ -19,5 +23,5 @@ const tokenSchema = new Schema(
   },
   { timestamps: true }
 );
- const tokenModel = mongoose.models.tokenModel || model("Token", tokenSchema);
+const tokenModel = mongoose.models.tokenModel || model("Token", tokenSchema);
 export default tokenModel;

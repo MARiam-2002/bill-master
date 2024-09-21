@@ -34,6 +34,17 @@ router.patch(
 
 )
 
+router.post(
+  "/user/login",
+  companyController.loginUser
+)
+
+router.post(
+   "/freeze-account/:userId",
+    isAuthenticated,
+    isAuthorized("company"),
+    companyController.freezeAccount
+)
 
 
 export default router;

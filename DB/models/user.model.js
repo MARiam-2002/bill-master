@@ -15,6 +15,15 @@ const userSchema = new Schema(
       type: String,
       default: "user",
     },
+    status: {
+      type: String,
+      default: "offline",
+    },
+    isFrozen: {
+      // New field for freezing the account
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
