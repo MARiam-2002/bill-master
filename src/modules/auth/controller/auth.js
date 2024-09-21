@@ -2,7 +2,7 @@ import bcryptjs from "bcryptjs";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import companyModel from "../../../../DB/models/company.model.js";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import userModel from "../../../../DB/models/user.model.js";
 
 export const registerCompany = asyncHandler(async (req, res, next) => {
@@ -56,11 +56,19 @@ export const loginCompany = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, result: token });
 });
 
-
 export const addUser = asyncHandler(async (req, res, next) => {
   const invoiceNumber = uuidv4();
-  const { phone } = req.body;
-  const user = await userModel.create({ phone, invoiceNumber });
+  const { phone, name } = req.body;
+  const user = await userModel.create({ name, phone, invoiceNumber });
   return res.status(200).json({ success: true, result: user });
-  
-})
+});
+
+export const updateUser = asyncHandler(async (req, res, next) => {
+  const { phone, name } = req.body;
+  const user = await userModel.findByIdAndUpdate(
+    req.params.id,
+    { phone, name },
+    { new: true }
+  );
+  return res.status(200).json({ success: true, result: user });
+});

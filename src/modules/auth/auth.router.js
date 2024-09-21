@@ -26,4 +26,14 @@ router.post(
   companyController.addUser
 );
 
+router.patch(
+  "/updateUser",
+  isAuthenticated,
+  isAuthorized("company"),
+  companyController.updateUser
+
+)
+
+
+
 export default router;
